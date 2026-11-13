@@ -1,0 +1,197 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/geist-mono";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * 设计语言：少线条，靠色阶 + 留白 + 圆角 + 柔和阴影分层（参考 Linear / Arc / Notion）
+ * - canvas：窗口底色（侧栏直接坐在它上面）
+ * - surface：主内容“纸面”，浮在 canvas 上，大圆角 + 极淡阴影
+ * - muted / accent：卡片悬停、分组底色
+ * - 窗口外观往 macOS 靠：无系统标题栏 + 自绘红绿灯、整窗圆角、侧栏半透明“毛玻璃”感（CSS 模拟）、SF 字体栈
+ */
+:root {
+  --radius: 0.875rem;
+  --canvas: oklch(0.955 0.005 286);
+  --canvas-tint: linear-gradient(165deg, oklch(0.968 0.008 255) 0%, oklch(0.952 0.006 286) 45%, oklch(0.945 0.008 320) 100%);
+  --window-edge: oklch(0 0 0 / 0.09);
+  --surface: oklch(0.995 0.001 286);
+  --surface-2: oklch(0.975 0.003 286);
+  --background: var(--surface);
+  --foreground: oklch(0.21 0.01 285);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.55 0.2 277);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.955 0.006 286);
+  --secondary-foreground: oklch(0.3 0.01 285);
+  --muted: oklch(0.958 0.004 286);
+  --muted-foreground: oklch(0.54 0.012 286);
+  --accent: oklch(0.948 0.012 280);
+  --accent-foreground: oklch(0.25 0.02 280);
+  --destructive: oklch(0.6 0.21 25);
+  --border: oklch(0.92 0.004 286 / 0.7);
+  --input: oklch(0.93 0.004 286);
+  --ring: oklch(0.55 0.2 277 / 0.45);
+  --shadow-surface: 0 1px 2px oklch(0.2 0.02 280 / 0.04), 0 8px 32px -8px oklch(0.2 0.02 280 / 0.08);
+  --shadow-pop: 0 12px 48px -12px oklch(0.2 0.03 280 / 0.22), 0 2px 6px oklch(0.2 0.02 280 / 0.05);
+  --hot: oklch(0.64 0.2 30);
+  --warm: oklch(0.72 0.16 65);
+  --good: oklch(0.62 0.15 160);
+  --cool: oklch(0.6 0.12 250);
+}
+
+.dark {
+  --canvas: oklch(0.225 0.006 286);
+  --canvas-tint: linear-gradient(165deg, oklch(0.245 0.012 260) 0%, oklch(0.222 0.008 286) 50%, oklch(0.215 0.012 320) 100%);
+  --window-edge: oklch(1 0 0 / 0.11);
+  --surface: oklch(0.18 0.004 286);
+  --surface-2: oklch(0.215 0.006 286);
+  --background: var(--surface);
+  --foreground: oklch(0.94 0.004 286);
+  --card: oklch(0.225 0.006 286);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.235 0.006 286);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.7 0.16 277);
+  --primary-foreground: oklch(0.16 0.02 280);
+  --secondary: oklch(0.25 0.006 286);
+  --secondary-foreground: oklch(0.9 0.005 286);
+  --muted: oklch(0.235 0.005 286);
+  --muted-foreground: oklch(0.66 0.012 286);
+  --accent: oklch(0.26 0.018 280);
+  --accent-foreground: oklch(0.95 0.01 280);
+  --destructive: oklch(0.66 0.19 22);
+  --border: oklch(1 0 0 / 0.06);
+  --input: oklch(1 0 0 / 0.08);
+  --ring: oklch(0.7 0.16 277 / 0.5);
+  --shadow-surface: 0 0 0 1px oklch(1 0 0 / 0.035), 0 16px 48px -16px oklch(0 0 0 / 0.6);
+  --shadow-pop: 0 0 0 1px oklch(1 0 0 / 0.06), 0 24px 64px -16px oklch(0 0 0 / 0.7);
+  --hot: oklch(0.7 0.18 30);
+  --warm: oklch(0.78 0.14 70);
+  --good: oklch(0.72 0.14 160);
+  --cool: oklch(0.7 0.11 250);
+}
+
+@theme inline {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro SC", "Inter Variable", "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Microsoft YaHei UI",
+    "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, "Cascadia Code", Consolas, monospace;
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-hot: var(--hot);
+  --color-warm: var(--warm);
+  --color-good: var(--good);
+  --color-cool: var(--cool);
+  --shadow-surface: var(--shadow-surface);
+  --shadow-pop: var(--shadow-pop);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  /* 窗口是透明的（transparent: true），圆角外的四个角要能透出桌面 */
+  html,
+  body {
+    background: transparent;
+  }
+  body {
+    @apply text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01", "tnum" 0;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow: hidden;
+  }
+  ::selection {
+    background: color-mix(in oklch, var(--primary) 22%, transparent);
+  }
+  /* 细滚动条：默认几乎不可见，悬停才浮现 */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--foreground) 14%, transparent) transparent;
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility drag-region {
+  -webkit-app-region: drag;
+}
+
+/* ---------- 无边框窗口（macOS 风格） ---------- */
+.app-window {
+  background: var(--canvas-tint), var(--canvas);
+}
+/* 整窗圆角 + 一圈极淡的发丝线（代替 Windows 的 1px 系统描边，和 macOS 窗口边缘一样几乎看不出） */
+.app-window-rounded {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 0.5px var(--window-edge);
+}
+
+/* 红绿灯：macOS 配色，按下变深；窗口失焦时变灰（鼠标移上去仍显示颜色） */
+.traffic-light {
+  --tl: #ff5f57;
+  --tl-edge: #e2463f;
+  color: #4d0000;
+  background: var(--tl);
+  box-shadow: inset 0 0 0 0.5px var(--tl-edge);
+  transition: background-color 120ms;
+}
+.traffic-light-min {
+  --tl: #febc2e;
+  --tl-edge: #e1a116;
+  color: #985712;
+}
+.traffic-light-max {
+  --tl: #28c840;
+  --tl-edge: #12ac28;
+  color: #0b650d;
+}
+.traffic-light:active {
+  filter: brightness(0.82);
+}
+.traffic-lights[data-focused="false"]:not(:hover) .traffic-light {
+  background: oklch(0.86 0 0);
+  box-shadow: inset 0 0 0 0.5px oklch(0.78 0 0);
+}
+.dark .traffic-lights[data-focused="false"]:not(:hover) .traffic-light {
+  background: oklch(0.4 0.003 286);
+  box-shadow: inset 0 0 0 0.5px oklch(0.34 0.003 286);
+}

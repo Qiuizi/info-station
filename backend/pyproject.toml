@@ -1,0 +1,43 @@
+[project]
+name = "info-station-backend"
+version = "0.1.0"
+description = "信息监控站 · 本地采集 / 筛选 / 调度后端"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "httpx>=0.27",
+    "selectolax>=0.3.21",
+    "beautifulsoup4>=4.12",
+    "feedparser>=6.0.11",
+    "apscheduler>=3.10,<4",
+    "pyyaml>=6.0",
+    "pydantic>=2.7",
+    "python-dateutil>=2.9",
+    "keyring>=25",
+]
+
+[project.optional-dependencies]
+browser = ["playwright>=1.45"]
+feishu = ["lark-oapi>=1.3"]
+build = ["pyinstaller>=6.6"]
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-asyncio>=0.23", "respx>=0.21"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "I", "UP", "B"]
+ignore = ["E501"]  # 中文注释较长，行宽交给编辑器

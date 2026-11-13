@@ -1,0 +1,374 @@
+{
+ "data": {
+  "user": {
+   "result": {
+    "__typename": "User",
+    "timeline": {
+     "timeline": {
+      "instructions": [
+       {
+        "type": "TimelineClearCache"
+       },
+       {
+        "type": "TimelinePinEntry",
+        "entry": {
+         "entryId": "tweet-1700000000000000000",
+         "sortIndex": null,
+         "content": {
+          "entryType": "TimelineTimelineItem",
+          "__typename": "TimelineTimelineItem",
+          "itemContent": {
+           "itemType": "TimelineTweet",
+           "__typename": "TimelineTweet",
+           "tweet_results": {
+            "result": {
+             "__typename": "Tweet",
+             "rest_id": "1700000000000000000",
+             "core": {
+              "user_results": {
+               "result": {
+                "__typename": "User",
+                "rest_id": "95171831",
+                "legacy": {
+                 "profile_image_url_https": "https://pbs.twimg.com/profile_images/1/OpenAI_normal.jpg",
+                 "followers_count": 1000
+                },
+                "core": {
+                 "screen_name": "OpenAI",
+                 "name": "OpenAI",
+                 "created_at": "Tue Jan 01 00:00:00 +0000 2019"
+                },
+                "avatar": {
+                 "image_url": "https://pbs.twimg.com/profile_images/1/OpenAI_normal.jpg"
+                }
+               }
+              }
+             },
+             "legacy": {
+              "id_str": "1700000000000000000",
+              "full_text": "Old pinned announcement",
+              "created_at": "Mon Jan 01 00:00:00 +0000 2024",
+              "favorite_count": 50000,
+              "retweet_count": 0,
+              "quote_count": 0,
+              "reply_count": 0,
+              "bookmark_count": 0,
+              "lang": "zh",
+              "entities": {
+               "urls": [],
+               "hashtags": [],
+               "user_mentions": []
+              },
+              "conversation_id_str": "1700000000000000000",
+              "user_id_str": "1"
+             },
+             "views": {
+              "count": "1234",
+              "state": "EnabledWithCount"
+             },
+             "source": "<a>Twitter Web App</a>",
+             "is_translatable": false
+            }
+           },
+           "tweetDisplayType": "Tweet"
+          }
+         }
+        }
+       },
+       {
+        "type": "TimelineAddEntries",
+        "entries": [
+         {
+          "entryId": "tweet-1988000000000000011",
+          "sortIndex": null,
+          "content": {
+           "entryType": "TimelineTimelineItem",
+           "__typename": "TimelineTimelineItem",
+           "itemContent": {
+            "itemType": "TimelineTweet",
+            "__typename": "TimelineTweet",
+            "tweet_results": {
+             "result": {
+              "__typename": "Tweet",
+              "rest_id": "1988000000000000011",
+              "core": {
+               "user_results": {
+                "result": {
+                 "__typename": "User",
+                 "rest_id": "95171831",
+                 "legacy": {
+                  "profile_image_url_https": "https://pbs.twimg.com/profile_images/1/OpenAI_normal.jpg",
+                  "followers_count": 1000
+                 },
+                 "core": {
+                  "screen_name": "OpenAI",
+                  "name": "OpenAI",
+                  "created_at": "Tue Jan 01 00:00:00 +0000 2019"
+                 },
+                 "avatar": {
+                  "image_url": "https://pbs.twimg.com/profile_images/1/OpenAI_normal.jpg"
+                 }
+                }
+               }
+              },
+              "legacy": {
+               "id_str": "1988000000000000011",
+               "full_text": "RT @karpathy: nanochat update",
+               "created_at": "Wed Nov 11 00:00:00 +0000 2026",
+               "favorite_count": 0,
+               "retweet_count": 0,
+               "quote_count": 0,
+               "reply_count": 0,
+               "bookmark_count": 0,
+               "lang": "zh",
+               "entities": {
+                "urls": [],
+                "hashtags": [],
+                "user_mentions": []
+               },
+               "conversation_id_str": "1988000000000000011",
+               "user_id_str": "1",
+               "retweeted_status_result": {
+                "result": {
+                 "__typename": "Tweet",
+                 "rest_id": "1988000000000000010",
+                 "core": {
+                  "user_results": {
+                   "result": {
+                    "__typename": "User",
+                    "rest_id": "994297243",
+                    "legacy": {
+                     "profile_image_url_https": "https://pbs.twimg.com/profile_images/1/karpathy_normal.jpg",
+                     "followers_count": 1000
+                    },
+                    "core": {
+                     "screen_name": "karpathy",
+                     "name": "Andrej Karpathy",
+                     "created_at": "Tue Jan 01 00:00:00 +0000 2019"
+                    },
+                    "avatar": {
+                     "image_url": "https://pbs.twimg.com/profile_images/1/karpathy_normal.jpg"
+                    }
+                   }
+                  }
+                 },
+                 "legacy": {
+                  "id_str": "1988000000000000010",
+                  "full_text": "nanochat update: training a small LLM end to end",
+                  "created_at": "Tue Nov 10 20:00:00 +0000 2026",
+                  "favorite_count": 9000,
+                  "retweet_count": 1200,
+                  "quote_count": 0,
+                  "reply_count": 0,
+                  "bookmark_count": 0,
+                  "lang": "zh",
+                  "entities": {
+                   "urls": [],
+                   "hashtags": [],
+                   "user_mentions": []
+                  },
+                  "conversation_id_str": "1988000000000000010",
+                  "user_id_str": "1"
+                 },
+                 "views": {
+                  "count": "1234",
+                  "state": "EnabledWithCount"
+                 },
+                 "source": "<a>Twitter Web App</a>",
+                 "is_translatable": false
+                }
+               }
+              },
+              "views": {
+               "count": "1234",
+               "state": "EnabledWithCount"
+              },
+              "source": "<a>Twitter Web App</a>",
+              "is_translatable": false
+             }
+            },
+            "tweetDisplayType": "Tweet"
+           }
+          }
+         },
+         {
+          "entryId": "tweet-1988000000000000012",
+          "sortIndex": null,
+          "content": {
+           "entryType": "TimelineTimelineItem",
+           "__typename": "TimelineTimelineItem",
+           "itemContent": {
+            "itemType": "TimelineTweet",
+            "__typename": "TimelineTweet",
+            "tweet_results": {
+             "result": {
+              "__typename": "Tweet",
+              "rest_id": "1988000000000000012",
+              "core": {
+               "user_results": {
+                "result": {
+                 "__typename": "User",
+                 "rest_id": "95171831",
+                 "legacy": {
+                  "profile_image_url_https": "https://pbs.twimg.com/profile_images/1/OpenAI_normal.jpg",
+                  "followers_count": 1000
+                 },
+                 "core": {
+                  "screen_name": "OpenAI",
+                  "name": "OpenAI",
+                  "created_at": "Tue Jan 01 00:00:00 +0000 2019"
+                 },
+                 "avatar": {
+                  "image_url": "https://pbs.twimg.com/profile_images/1/OpenAI_normal.jpg"
+                 }
+                }
+               }
+              },
+              "legacy": {
+               "id_str": "1988000000000000012",
+               "full_text": "Introducing a new model for students… https://t.co/x",
+               "created_at": "Wed Nov 11 00:30:00 +0000 2026",
+               "favorite_count": 20000,
+               "retweet_count": 4000,
+               "quote_count": 0,
+               "reply_count": 0,
+               "bookmark_count": 0,
+               "lang": "zh",
+               "entities": {
+                "urls": [],
+                "hashtags": [],
+                "user_mentions": []
+               },
+               "conversation_id_str": "1988000000000000012",
+               "user_id_str": "1"
+              },
+              "views": {
+               "count": "1234",
+               "state": "EnabledWithCount"
+              },
+              "source": "<a>Twitter Web App</a>",
+              "is_translatable": false,
+              "note_tweet": {
+               "is_expandable": true,
+               "note_tweet_results": {
+                "result": {
+                 "id": "n1",
+                 "text": "Introducing a new model for students. It is free in the education plan until 2027-01-31. Apply before 2026-11-30.",
+                 "entity_set": {
+                  "urls": []
+                 }
+                }
+               }
+              }
+             }
+            },
+            "tweetDisplayType": "Tweet"
+           }
+          }
+         },
+         {
+          "entryId": "profile-conversation-1",
+          "sortIndex": "5",
+          "content": {
+           "entryType": "TimelineTimelineModule",
+           "__typename": "TimelineTimelineModule",
+           "items": [
+            {
+             "entryId": "profile-conversation-1-tweet-1988000000000000013",
+             "item": {
+              "itemContent": {
+               "itemType": "TimelineTweet",
+               "tweet_results": {
+                "result": {
+                 "__typename": "Tweet",
+                 "rest_id": "1988000000000000013",
+                 "core": {
+                  "user_results": {
+                   "result": {
+                    "__typename": "User",
+                    "rest_id": "95171831",
+                    "legacy": {
+                     "profile_image_url_https": "https://pbs.twimg.com/profile_images/1/OpenAI_normal.jpg",
+                     "followers_count": 1000
+                    },
+                    "core": {
+                     "screen_name": "OpenAI",
+                     "name": "OpenAI",
+                     "created_at": "Tue Jan 01 00:00:00 +0000 2019"
+                    },
+                    "avatar": {
+                     "image_url": "https://pbs.twimg.com/profile_images/1/OpenAI_normal.jpg"
+                    }
+                   }
+                  }
+                 },
+                 "legacy": {
+                  "id_str": "1988000000000000013",
+                  "full_text": "Thread part 1: what's new",
+                  "created_at": "Wed Nov 11 01:00:00 +0000 2026",
+                  "favorite_count": 800,
+                  "retweet_count": 90,
+                  "quote_count": 0,
+                  "reply_count": 0,
+                  "bookmark_count": 0,
+                  "lang": "zh",
+                  "entities": {
+                   "urls": [],
+                   "hashtags": [],
+                   "user_mentions": []
+                  },
+                  "conversation_id_str": "1988000000000000013",
+                  "user_id_str": "1"
+                 },
+                 "views": {
+                  "count": "1234",
+                  "state": "EnabledWithCount"
+                 },
+                 "source": "<a>Twitter Web App</a>",
+                 "is_translatable": false
+                }
+               }
+              }
+             }
+            },
+            {
+             "entryId": "x",
+             "item": {
+              "itemContent": {
+               "itemType": "TimelineTweet",
+               "tweet_results": {
+                "result": {
+                 "__typename": "TweetTombstone",
+                 "tombstone": {
+                  "text": {
+                   "text": "This Post is unavailable."
+                  }
+                 }
+                }
+               }
+              }
+             }
+            }
+           ],
+           "displayType": "VerticalConversation"
+          }
+         },
+         {
+          "entryId": "cursor-bottom-1",
+          "sortIndex": "1",
+          "content": {
+           "entryType": "TimelineTimelineCursor",
+           "__typename": "TimelineTimelineCursor",
+           "value": "DAAC",
+           "cursorType": "Bottom"
+          }
+         }
+        ]
+       }
+      ]
+     }
+    }
+   }
+  }
+ }
+}

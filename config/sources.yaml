@@ -1,0 +1,206 @@
+# 信源配置：可在桌面端「信源管理」里编辑，也可以直接改这个文件（保存后在界面点“重新加载”）。
+# type: rss / html_list / json / github / playwright / feishu / x
+# tier: T1（官方一手，门槛低） / T2（媒体、聚合、个人，门槛 +10）
+# category: school 学校通知 / competition 竞赛科研 / tech 技术动态 / news 新闻话题
+sources:
+  # ------------------------------------------------------------ 学校通知
+  - id: scu-tzgg
+    name: 四川大学 · 通知公告
+    type: html_list
+    url: https://www.scu.edu.cn/index/xw/tzgg.htm
+    tier: T1
+    category: school
+    enabled: true
+    interval_minutes: 60
+    list:
+      item: li > a.wl.flex
+      title: h3
+      date: [.date p, .date span]   # p=YYYY.MM，span=日，按“年 月 日”顺序拼接
+    detail:
+      enabled: true
+      content: [.v_news_content, "#vsb_content"]
+      max: 6
+  - id: scu-jwc
+    name: 川大教务处 · 通知公告
+    type: html_list
+    url: https://jwc.scu.edu.cn/tzgg.htm
+    tier: T1
+    category: school
+    enabled: true
+    interval_minutes: 30
+    list:
+      item: li > a[href*="info/"]
+      title: .text p
+      date: [.date span, .date p]   # span=年，p=MM/DD
+    detail:
+      enabled: true
+      title: h1                      # 列表标题会被截断成“...”，用详情页 h1 补全
+      content: [.v_news_content, "#vsb_content"]
+      max: 8
+  - id: sw-xytz
+    name: 软件学院 · 学院通知
+    type: playwright                 # sw.scu.edu.cn 有 JS 反爬（HTTP 202 + 瑞数），必须用浏览器渲染
+    url: https://sw.scu.edu.cn/xwgg/xytz.htm
+    tier: T1
+    category: school
+    enabled: true
+    interval_minutes: 60
+    wait_for: span.fr
+    list:
+      item: "li:has(span.fr)"
+      title: a@title
+      link: a
+      date: span.fr
+      limit: 15
+    detail:
+      enabled: true
+      content: [.v_news_content, "#vsb_content"]
+      max: 4
+  - id: sw-jxgl
+    name: 软件学院 · 教学运行
+    type: playwright
+    url: https://sw.scu.edu.cn/jxgl.htm
+    tier: T1
+    category: school
+    enabled: true
+    interval_minutes: 120
+    wait_for: span.fr
+    list: {item: "li:has(span.fr)", title: a@title, link: a, date: span.fr, limit: 15}
+    detail: {enabled: true, content: [.v_news_content, "#vsb_content"], max: 3}
+  - id: scu-news
+    name: 四川大学新闻网 · 综合新闻
+    type: html_list
+    url: https://news.scu.edu.cn/zhxw.htm
+    tier: T2
+    category: school
+    enabled: true
+    interval_minutes: 180
+    list:
+      item: li:not(.swiper-slide) > a.wl.flex
+      title: h3
+      date: [.date p, .date span]
+  # ------------------------------------------------------------ 竞赛科研
+  - id: sw-kjcx
+    name: 软件学院 · 科技创新与竞赛
+    type: playwright
+    url: https://sw.scu.edu.cn/xsgz/kjcx.htm
+    tier: T1
+    category: competition
+    enabled: true
+    interval_minutes: 120
+    wait_for: span.fr
+    list: {item: "li:has(span.fr)", title: a@title, link: a, date: span.fr, limit: 15}
+    detail: {enabled: true, content: [.v_news_content, "#vsb_content"], max: 3}
+  - id: csp-notice
+    name: CCF CSP 认证 · 通知
+    type: html_list
+    url: https://www.cspro.org/cms/show.action?code=publish_8ac21fad9d27f22a019f5944f2eb00e1&siteid=100000
+    tier: T1
+    category: competition
+    enabled: true
+    interval_minutes: 360
+    list:
+      item: li:has(a[href*="channelid=0000000103&newsid"])
+      title: a@title
+      link: a
+      date: time
+  # ------------------------------------------------------------ 技术动态
+  - id: aihot
+    name: AIHOT · AI 精选
+    type: rss
+    url: https://aihot.news/feed.xml   # 个人非商业订阅；只看摘要与原文链接
+    tier: T2
+    category: tech
+    enabled: true
+    interval_minutes: 60
+  - id: gh-trending-py
+    name: GitHub Trending · Python
+    type: github
+    mode: trending
+    language: python
+    since: daily
+    tier: T2
+    category: tech
+    enabled: true
+    interval_minutes: 360
+    limit: 10
+  - id: gh-new-ai
+    name: GitHub · 本周新晋 AI 仓库
+    type: github
+    mode: search
+    query: "topic:llm created:>{days_ago:7} stars:>100"
+    tier: T2
+    category: tech
+    enabled: true
+    interval_minutes: 360
+    limit: 10
+  - id: gh-tauri
+    name: Tauri · Releases
+    type: github
+    mode: releases
+    repo: tauri-apps/tauri
+    tier: T1
+    category: tech
+    enabled: true
+    interval_minutes: 720
+    limit: 5
+  - id: gh-uv
+    name: uv · Releases
+    type: github
+    mode: releases
+    repo: astral-sh/uv
+    tier: T1
+    category: tech
+    enabled: true
+    interval_minutes: 720
+    limit: 5
+  - id: hn-front
+    name: Hacker News · 200+ 分
+    type: rss
+    url: https://hnrss.org/frontpage?points=200
+    tier: T2
+    category: tech
+    enabled: true
+    interval_minutes: 120
+  # ------------------------------------------------------------ 新闻话题
+  - id: chinanews
+    name: 中新网 · 即时新闻
+    type: rss
+    url: https://www.chinanews.com.cn/rss/scroll-news.xml
+    tier: T2
+    category: news
+    enabled: true
+    interval_minutes: 60
+    limit: 30
+  - id: ithome
+    name: IT之家
+    type: rss
+    url: https://www.ithome.com/rss/
+    tier: T2
+    category: news
+    enabled: true
+    interval_minutes: 60
+    limit: 30
+  - id: x-ai
+    name: X · AI 大模型（示例，确认后再启用）
+    type: x                          # 用你自己登录的浏览器打开 x.com 搜索页 / 主页，每天一次（设置 → X）
+    tier: T2
+    category: news
+    enabled: false                   # 先在 X 卡片里“打开浏览器登录 X”，确认关键词和账号后再打开
+    use_proxy: true                  # 走设置里的全局代理（默认 http://127.0.0.1:7897）
+    keywords:                        # 搜索“最新”（f=live）；可用 X 搜索语法，min_faves 过滤低互动
+      - DeepSeek min_faves:50
+      - 大模型 min_faves:20
+      - LLM min_faves:200
+    accounts: [OpenAI, AnthropicAI, GoogleDeepMind, deepseek_ai, karpathy]
+    per_target_max: 30               # 每个关键词 / 账号最多取 30 条
+    include_retweets: false
+    include_replies: false
+  # ------------------------------------------------------------ IM（骨架）
+  - id: feishu
+    name: 飞书 · 指定群消息（官方开放平台，骨架）
+    type: feishu
+    tier: T1
+    category: school
+    enabled: false
+    allow_llm: false   # 聊天内容默认不送云端模型

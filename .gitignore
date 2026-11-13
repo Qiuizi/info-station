@@ -1,0 +1,44 @@
+# 依赖与构建产物
+node_modules/
+dist/
+apps/desktop/src-tauri/target/
+apps/desktop/src-tauri/gen/schemas/
+apps/desktop/src-tauri/binaries/*
+!apps/desktop/src-tauri/binaries/README.md
+backend/.venv/
+backend/build/
+backend/dist/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# 本地数据（数据库、设置里的密钥、浏览器登录态）
+data/
+*.db
+*.db-wal
+*.db-shm
+settings.json
+browser-profile/
+logs/
+*.sqlite
+*.sqlite3
+# 本地补丁、构建日志、凭据导出
+*.patch
+buildlogs/
+*.pem
+*.key
+credentials*.json
+token*.json
+
+# 密钥
+.env
+.env.*
+!.env.example
+
+# 编辑器 / 系统
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.log
