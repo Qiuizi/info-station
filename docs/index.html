@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>信息监控站 · Info Station</title>
-<meta name="description" content="本地优先的 Windows 桌面信息监控站：学校通知、竞赛科研、技术动态、新闻与邮件汇到一处，每天在 DeepSeek 谷时批量打分，只推真正值得看的。">
+<meta name="description" content="信息监控站 v0.1.0：本地优先的 Windows 桌面监控。下载 NSIS setup.exe 或 MSI。学校通知、竞赛、技术动态、新闻与邮件留在本机；X 与邮件示例默认关闭。">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#0b0b12" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
-<meta property="og:title" content="信息监控站 · Info Station">
-<meta property="og:description" content="学校通知、竞赛科研、技术动态、新闻与邮件，一个安静的桌面窗口。">
+<meta property="og:title" content="信息监控站 v0.1.0">
+<meta property="og:description" content="下载 Windows 安装包（NSIS 或 MSI）。数据只在本机。X 与邮件示例默认关闭。">
 <meta property="og:image" content="https://qiuizi.github.io/info-station/assets/screenshots/all-light.webp">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/icon.png">
@@ -17,68 +17,118 @@
 :root{
   --bg:#fbfbfd;--fg:#1d1d1f;--muted:#6e6e73;--card:#fff;--line:rgba(0,0,0,.08);
   --i:#6366f1;--v:#8b5cf6;--grad:linear-gradient(135deg,#4f46e5 0%,#7c3aed 55%,#a855f7 100%);
-  --shadow:0 30px 80px -30px rgba(79,70,229,.35),0 10px 30px -15px rgba(0,0,0,.18);
+  --shadow:0 24px 60px -28px rgba(79,70,229,.38),0 8px 24px -16px rgba(0,0,0,.16);
+  --pad:24px;
 }
-@media (prefers-color-scheme:dark){:root{--bg:#0b0b12;--fg:#f5f5f7;--muted:#a1a1aa;--card:#15151f;--line:rgba(255,255,255,.08);--shadow:0 30px 80px -30px rgba(124,58,237,.45),0 10px 30px -15px rgba(0,0,0,.6)}}
+@media (prefers-color-scheme:dark){:root{--bg:#0b0b12;--fg:#f5f5f7;--muted:#a1a1aa;--card:#15151f;--line:rgba(255,255,255,.1);--shadow:0 24px 60px -28px rgba(124,58,237,.5),0 8px 24px -16px rgba(0,0,0,.6)}}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;color-scheme:light dark}
+#features,#screens,#privacy,#download{scroll-margin-top:68px}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei","Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
-.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
-nav{position:sticky;top:0;z-index:10;backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:color-mix(in srgb,var(--bg) 72%,transparent);border-bottom:1px solid var(--line)}
-nav .wrap{display:flex;align-items:center;height:52px;gap:28px;font-size:13px}
-nav .brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;margin-right:auto}
-nav .brand img{width:22px;height:22px}
-nav a.l{color:var(--muted);transition:color .2s}nav a.l:hover{color:var(--fg)}
-.btn{display:inline-flex;align-items:center;gap:8px;border-radius:980px;font-weight:500;transition:transform .2s,opacity .2s,background .2s}
-.btn:hover{transform:translateY(-1px)}
-.btn-p{background:var(--grad);color:#fff;padding:13px 26px;font-size:17px;box-shadow:0 12px 30px -10px rgba(99,102,241,.6)}
-.btn-s{color:var(--i);padding:13px 18px;font-size:17px}
-.btn-s:hover{text-decoration:underline}
-.btn-sm{background:var(--grad);color:#fff;padding:5px 14px;font-size:12px}
-header.hero{position:relative;text-align:center;padding:96px 0 40px}
-.glow{position:absolute;inset:-200px 0 auto;height:700px;background:radial-gradient(600px 300px at 50% 35%,rgba(124,58,237,.22),transparent 70%),radial-gradient(500px 260px at 30% 20%,rgba(79,70,229,.18),transparent 70%);pointer-events:none;z-index:-1}
-.hero .icon{width:128px;height:128px;filter:drop-shadow(0 20px 40px rgba(99,102,241,.45));animation:float 6s ease-in-out infinite}
-@keyframes float{50%{transform:translateY(-8px)}}
-.eyebrow{margin-top:26px;font-size:15px;font-weight:600;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.02em}
-h1{font-size:clamp(44px,7vw,80px);line-height:1.05;letter-spacing:-.015em;font-weight:700;margin-top:6px}
-.lead{font-size:clamp(19px,2.2vw,24px);color:var(--muted);max-width:760px;margin:20px auto 0;line-height:1.45}
-.cta{display:flex;justify-content:center;gap:10px;margin-top:34px;flex-wrap:wrap}
+a:focus-visible,.btn:focus-visible{outline:2px solid var(--i);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--pad)}
+nav{position:sticky;top:0;z-index:10;backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;height:56px;gap:22px;font-size:13px}
+nav .brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;margin-right:auto;white-space:nowrap}
+nav .brand img{width:22px;height:22px;flex:none}
+nav a.l{color:var(--muted);transition:color .2s;white-space:nowrap}nav a.l:hover{color:var(--fg)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:980px;font-weight:600;line-height:1.2;transition:transform .2s,opacity .2s}
+.btn-p{background:var(--grad);color:#fff;padding:12px 22px;font-size:15px;box-shadow:0 10px 24px -12px rgba(99,102,241,.8)}
+.btn-g{color:var(--fg);padding:11px 18px;font-size:15px;border:1px solid var(--line);background:var(--card)}
+.btn-sm{background:var(--grad);color:#fff;padding:8px 14px;font-size:13px;flex:none;white-space:nowrap;min-height:36px}
+header.hero{position:relative;text-align:center;padding:36px 0 8px}
+.glow{position:absolute;inset:-160px 0 auto;height:520px;background:radial-gradient(520px 240px at 50% 28%,rgba(124,58,237,.18),transparent 70%),radial-gradient(420px 200px at 28% 12%,rgba(79,70,229,.14),transparent 70%);pointer-events:none;z-index:-1}
+.hero .icon{width:64px;height:64px;filter:drop-shadow(0 14px 28px rgba(99,102,241,.4))}
+@media (prefers-reduced-motion:no-preference){.hero .icon{animation:float 6s ease-in-out infinite}}
+@keyframes float{50%{transform:translateY(-6px)}}
+.eyebrow{margin-top:14px;font-size:13px;font-weight:650;letter-spacing:.04em;text-transform:none;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1{font-size:clamp(34px,4vw,56px);line-height:1.12;letter-spacing:-.02em;font-weight:700;margin-top:8px;text-wrap:balance}
+.lead{font-size:clamp(16px,1.6vw,19px);color:var(--muted);max-width:38em;margin:12px auto 0;line-height:1.5;text-wrap:balance}
+.panel{margin:26px auto 0;max-width:820px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+.panel-top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.panel-top h2{font-size:18px;line-height:1.25;letter-spacing:-.01em;font-weight:700;text-align:left}
+.panel-top p{color:var(--muted);font-size:13px;margin-top:2px}
+.panel-top a.quiet{color:var(--i);font-size:13px;font-weight:600;white-space:nowrap;padding-bottom:2px}
+.panel-top a.quiet:hover{text-decoration:underline}
+.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.dl-opt{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-height:148px;padding:14px 14px 12px;border-radius:16px;border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 72%,var(--card));text-align:left}
+.dl-opt.rec{border-color:color-mix(in srgb,var(--i) 55%,var(--line));background:linear-gradient(180deg,rgba(99,102,241,.1),color-mix(in srgb,var(--bg) 80%,transparent) 62%)}
+.kind{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700}
+.badge{font-size:11px;font-weight:700;color:#fff;background:var(--grad);border-radius:999px;padding:2px 8px;letter-spacing:.02em}
+.file{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;line-height:1.35;color:var(--muted);overflow-wrap:anywhere}
+.hint{font-size:13px;line-height:1.45;color:var(--muted)}
+.get{margin-top:auto;width:100%;min-height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+.dl-opt.rec .get{background:var(--grad);color:#fff}
+.dl-opt.alt .get{border:1px solid color-mix(in srgb,var(--i) 45%,var(--line));color:var(--i);background:transparent}
+@media (hover:hover){
+  .btn:hover{transform:translateY(-1px)}
+  .dl-opt:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--i) 40%,var(--line))}
+}
+.fine{margin-top:12px;font-size:12.5px;line-height:1.55;color:var(--muted)}
+.fine a{color:var(--i);font-weight:600}
+.fine a:hover{text-decoration:underline}
 .meta{margin-top:14px;font-size:13px;color:var(--muted)}
-.shot{margin:64px auto 0;max-width:1040px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);background:var(--card)}
+.meta a{color:var(--i);font-weight:600}
+.shot{margin:28px auto 0;max-width:1040px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);background:var(--card)}
 .shot img{display:block;width:100%;height:auto}
 .shot .dark{display:none}
 @media (prefers-color-scheme:dark){.shot .light{display:none}.shot .dark{display:block}}
-section{padding:110px 0 0}
-h2{font-size:clamp(32px,4.6vw,52px);line-height:1.1;letter-spacing:-.01em;font-weight:700;text-align:center}
-.sub{text-align:center;color:var(--muted);font-size:19px;margin:14px auto 0;max-width:680px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:54px}
-@media (max-width:900px){.grid{grid-template-columns:1fr 1fr}}
-@media (max-width:600px){.grid{grid-template-columns:1fr}nav a.l{display:none}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:30px 28px;transition:transform .3s,box-shadow .3s}
-.card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
-.card .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(99,102,241,.14),rgba(168,85,247,.14));color:var(--v)}
-.card .ic svg{width:22px;height:22px}
-.card h3{font-size:19px;margin-top:18px;font-weight:600;letter-spacing:-.005em}
-.card p{color:var(--muted);font-size:15px;margin-top:8px}
-.duo{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:54px}
-@media (max-width:800px){.duo{grid-template-columns:1fr}}
+section{padding:88px 0 0}
+h2.sec{font-size:clamp(30px,4vw,46px);line-height:1.15;letter-spacing:-.02em;font-weight:700;text-align:center;text-wrap:balance}
+.sub{text-align:center;color:var(--muted);font-size:17px;margin:12px auto 0;max-width:40em;text-wrap:balance}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px 22px}
+.card .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(99,102,241,.14),rgba(168,85,247,.14));color:var(--v)}
+.card .ic svg{width:20px;height:20px}
+.card h3{font-size:17px;margin-top:14px;font-weight:650;letter-spacing:-.01em}
+.card p{color:var(--muted);font-size:14.5px;margin-top:6px;line-height:1.55}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px}
 .duo figure{border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--card)}
 .duo img{display:block;width:100%;height:auto}
-.duo figcaption{font-size:14px;color:var(--muted);padding:12px 16px}
-.band{margin-top:110px;padding:90px 0;text-align:center;background:linear-gradient(180deg,transparent,rgba(99,102,241,.07))}
+.duo figcaption{font-size:13.5px;color:var(--muted);padding:12px 14px;line-height:1.45}
+.band{margin-top:88px;padding:72px 0;text-align:center;background:linear-gradient(180deg,transparent,rgba(99,102,241,.07))}
 .band h2 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.stats{display:flex;justify-content:center;gap:56px;margin-top:44px;flex-wrap:wrap}
-.stats b{display:block;font-size:44px;font-weight:700;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.stats span{color:var(--muted);font-size:14px}
-.note{max-width:820px;margin:44px auto 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 22px;font-size:14px;color:var(--muted);text-align:left}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 12px;max-width:760px;margin:36px auto 0}
+.stats div{text-align:center}
+.stats b{display:block;font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stats span{display:block;margin-top:4px;color:var(--muted);font-size:13px;line-height:1.4}
+.note{max-width:820px;margin:28px auto 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;font-size:14px;color:var(--muted);text-align:left;line-height:1.6}
 .note b{color:var(--fg)}
-footer{border-top:1px solid var(--line);margin-top:100px;padding:28px 0 48px;font-size:12px;color:var(--muted)}
-footer .wrap{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.cta{display:flex;justify-content:center;gap:10px;margin-top:28px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);margin-top:72px;padding:24px 0 40px;font-size:12px;color:var(--muted)}
+footer .wrap{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
 footer .sp{margin-right:auto}
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
-.reveal.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.hero .icon{animation:none}}
+footer .links{display:flex;gap:16px;flex-wrap:wrap}
+footer a:hover{color:var(--fg)}
+@media (max-width:800px){
+  .duo{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:700px){
+  :root{--pad:20px}
+  nav .wrap{height:52px;gap:12px}
+  nav a.l{display:none}
+  header.hero{padding:12px 0 0}
+  .hero .icon{width:44px;height:44px}
+  .eyebrow{margin-top:10px;font-size:12px}
+  h1{margin-top:6px}
+  .lead{margin-top:8px;font-size:15px}
+  .panel{margin-top:14px;padding:14px;border-radius:18px}
+  .panel-top{align-items:flex-start;flex-direction:column;gap:4px}
+  .dl-grid{grid-template-columns:1fr}
+  .dl-opt{min-height:0}
+  section{padding:56px 0 0}
+  .grid{grid-template-columns:1fr;margin-top:28px}
+  .sub{font-size:15px}
+  .stats{grid-template-columns:1fr 1fr;gap:22px 10px;margin-top:28px}
+  .stats b{font-size:28px}
+  .band{margin-top:56px;padding:48px 0}
+  .cta{flex-direction:column;align-items:stretch}
+  .cta .btn{width:100%}
+  footer{margin-top:48px}
+  footer .sp{margin-right:0;width:100%}
+}
 </style>
 </head>
 <body>
@@ -86,79 +136,98 @@ footer .sp{margin-right:auto}
   <a class="brand" href="#"><img src="assets/icon.svg" alt="">信息监控站</a>
   <a class="l" href="#features">功能</a>
   <a class="l" href="#screens">截图</a>
+  <a class="l" href="#download">安装包</a>
   <a class="l" href="#privacy">隐私</a>
   <a class="l" href="https://github.com/Qiuizi/info-station">GitHub</a>
-  <a class="btn btn-sm" href="https://github.com/Qiuizi/info-station/releases/latest">下载</a>
+  <a class="btn btn-sm" href="https://github.com/Qiuizi/info-station/releases/latest">下载 v0.1.0</a>
 </div></nav>
 
 <header class="hero"><div class="glow"></div><div class="wrap">
   <img class="icon" src="assets/icon.svg" alt="信息监控站图标">
-  <div class="eyebrow">Info Station · 开源 · Windows</div>
-  <h1>重要的消息，<br>一条都不漏。</h1>
-  <p class="lead">学校通知、竞赛科研、技术动态、新闻和邮件，汇进一个安静的桌面窗口。每天在 DeepSeek 谷时批量打分，只把真正值得看的推给你。</p>
-  <div class="cta">
-    <a class="btn btn-p" href="https://github.com/Qiuizi/info-station/releases/latest">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-      下载 Windows 版</a>
-    <a class="btn btn-s" href="https://github.com/Qiuizi/info-station">在 GitHub 查看源码 ›</a>
+  <div class="eyebrow">Info Station · v0.1.0 · Windows 10/11</div>
+  <h1>重要的消息，先到你眼前。</h1>
+  <p class="lead">学校通知、竞赛、技术动态、新闻和邮件，汇进一个安静的桌面窗口。数据只在你的电脑上。</p>
+
+  <div class="panel" id="download">
+    <div class="panel-top">
+      <div>
+        <h2>下载 v0.1.0 安装包</h2>
+        <p>Windows 10 / 11 · 64 位</p>
+      </div>
+      <a class="quiet" href="https://github.com/Qiuizi/info-station/releases/latest">打开 Releases / latest</a>
+    </div>
+    <div class="dl-grid">
+      <a class="dl-opt rec" href="https://github.com/Qiuizi/info-station/releases/download/v0.1.0/InfoStation_0.1.0_x64-setup.exe">
+        <span class="kind">NSIS 安装包 <span class="badge">推荐</span></span>
+        <span class="file">InfoStation_0.1.0_x64-setup.exe</span>
+        <span class="hint">装到当前用户，不需要管理员。约 64 MB。</span>
+        <span class="get">下载 setup.exe</span>
+      </a>
+      <a class="dl-opt alt" href="https://github.com/Qiuizi/info-station/releases/download/v0.1.0/InfoStation_0.1.0_x64_zh-CN.msi">
+        <span class="kind">MSI 安装包</span>
+        <span class="file">InfoStation_0.1.0_x64_zh-CN.msi</span>
+        <span class="hint">Windows Installer 格式。约 65 MB。</span>
+        <span class="get">下载 .msi</span>
+      </a>
+    </div>
+    <p class="fine">未做代码签名。SmartScreen 若提示「未知发布者」，点「更多信息 → 仍要运行」。WebView2 在 Windows 11 已自带。X 与邮件示例默认关闭；没有模型 Key 时只按规则打分。</p>
   </div>
-  <div class="meta">免费 · MIT 许可 · Windows 10 / 11 · 数据只存在本机</div>
-  <div class="shot reveal">
-    <img class="light" src="assets/screenshots/all-light.webp" alt="全部动态（浅色）" width="1600" height="1025">
-    <img class="dark" src="assets/screenshots/all-dark.webp" alt="全部动态（深色）" width="1600" height="1025" loading="lazy">
+  <p class="meta">MIT 许可 · 无遥测 · <a href="https://github.com/Qiuizi/info-station">源码</a></p>
+
+  <div class="shot">
+    <img class="light" src="assets/screenshots/all-light.webp" alt="全部动态（浅色）：按重要性排列的信息流" width="1600" height="1025">
+    <img class="dark" src="assets/screenshots/all-dark.webp" alt="全部动态（深色）：按重要性排列的信息流" width="1600" height="1025">
   </div>
 </div></header>
 
 <section id="features"><div class="wrap">
-  <h2 class="reveal">该看的，它替你先看一遍。</h2>
-  <p class="sub reveal">规则 + 大模型两道筛选，给每条信息打出重要性、一句话摘要和截止日期。</p>
+  <h2 class="sec">该看的，它替你先看一遍。</h2>
+  <p class="sub">规则先筛一轮。填了模型 Key 之后，每天在 DeepSeek 谷时再打一次分，给出重要性、一句话摘要和截止日期。</p>
   <div class="grid">
-    <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><h3>学校通知，不再错过</h3><p>官网、教务处、学院通知直接抓取；按你的年级与学院判断「和你有没有关系」，研究生专属、其他年级的自动降权。</p></div>
-    <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></svg></div><h3>截止日期看板</h3><p>从正文里抽出报名、提交的截止时间，按 3 天 / 本周 / 一个月排好。「24 点」「中午 12 点」都能读懂。</p></div>
-    <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>谷时打分，半价</h3><p>抓取随时进行，模型打分每天一次，自动避开 DeepSeek 高峰时段和法定节假日表；没有 Key 也能只用规则。</p></div>
-    <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m22 7-10 6L2 7"/></svg></div><h3>邮件，只读</h3><p>QQ 邮箱、川大邮箱、Gmail、Outlook。只读收取、不标已读、不发不删；授权码只存进 Windows 凭据管理器。</p></div>
-    <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5"/></svg></div><h3>RSS、GitHub、X</h3><p>RSS / Atom、GitHub Trending 与 Releases、用你自己登录的浏览器每天看一次 X 关键词和账号。</p></div>
-    <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></div><h3>睡醒自动补上</h3><p>托盘常驻、开机自启。关机或休眠错过的抓取和打分，醒来后错峰补跑，不会把电脑唤醒。</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><h3>学校通知</h3><p>官网、教务处、学院通知按你在设置里填写的年级和学院判断关不相关。面向其他年级或只面向研究生的，会降权。</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></svg></div><h3>截止日期看板</h3><p>从正文里抽出报名和提交的截止时间，按三天、本周、一个月排开。「24 点」和「中午 12 点」会按当天时间理解。</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>谷时打分</h3><p>抓取按各自间隔进行。模型打分默认每天一次，并避开 DeepSeek 的高峰时段。没有 Key、或余额不足时，自动只用规则分。</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m22 7-10 6L2 7"/></svg></div><h3>邮件，只读</h3><p>QQ 邮箱、川大邮箱、Gmail、Outlook。示例默认关闭。只读收取，不标已读，不发送也不删除。授权码只进 Windows 凭据管理器。</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5"/></svg></div><h3>RSS、GitHub，X 可选</h3><p>RSS / Atom、GitHub Trending 和 Releases 可以直接用。X 关键词和账号要用你自己登录的浏览器，每天最多一次，示例默认关闭，可能违反 X 的服务条款。</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></div><h3>睡醒再补</h3><p>托盘常驻，可开机自启。关机或休眠时不会把电脑唤醒；醒来后补上错过的抓取。错过的每日打分会在谷时补跑。</p></div>
   </div>
 </div></section>
 
 <section id="screens"><div class="wrap">
-  <h2 class="reveal">安静，但什么都在。</h2>
-  <p class="sub reveal">macOS 风格的无边框窗口，跟随系统深浅色。</p>
+  <h2 class="sec">安静，但常用的都在。</h2>
+  <p class="sub">无边框窗口，跟随系统的深色或浅色。</p>
   <div class="duo">
-    <figure class="reveal"><img src="assets/screenshots/brief-dark.webp" alt="每日简报" loading="lazy" width="1600" height="1025"><figcaption>每日简报：今天必看的几条，一眼看完</figcaption></figure>
-    <figure class="reveal"><img src="assets/screenshots/deadlines-light.webp" alt="截止日期看板" loading="lazy" width="1600" height="1025"><figcaption>截止日期看板：按紧急程度分栏</figcaption></figure>
-    <figure class="reveal"><img src="assets/screenshots/email-light.webp" alt="邮件信源" loading="lazy" width="1600" height="1025"><figcaption>邮件信源：服务商预设、授权码说明、一键测试连接</figcaption></figure>
-    <figure class="reveal"><img src="assets/screenshots/sources-light.webp" alt="信源管理" loading="lazy" width="1600" height="1025"><figcaption>信源管理：启停、试抓、看错误，全部是配置文件</figcaption></figure>
+    <figure><img src="assets/screenshots/brief-dark.webp" alt="每日简报（深色）" width="1600" height="1025"><figcaption>每日简报：当天分数较高的几条</figcaption></figure>
+    <figure><img src="assets/screenshots/deadlines-light.webp" alt="截止日期看板（浅色）" width="1600" height="1025"><figcaption>截止日期看板：按远近分栏</figcaption></figure>
+    <figure><img src="assets/screenshots/email-light.webp" alt="邮件信源（浅色）" width="1600" height="1025"><figcaption>邮件：服务商预设、授权码说明、测试连接。示例默认关闭</figcaption></figure>
+    <figure><img src="assets/screenshots/sources-light.webp" alt="信源管理（浅色）" width="1600" height="1025"><figcaption>信源管理：启停、试抓、看错误。信源写在配置文件里</figcaption></figure>
   </div>
 </div></section>
 
 <div class="band" id="privacy"><div class="wrap">
-  <h2 class="reveal">你的数据，<span>只在你的电脑上。</span></h2>
-  <p class="sub reveal">没有账号、没有云端、没有统计脚本。除了你自己配置的模型接口，不向任何地方发送数据——这个页面也一样。</p>
-  <div class="stats reveal">
+  <h2 class="sec">你的数据，<span>只在你的电脑上。</span></h2>
+  <p class="sub">没有账号，没有云同步，没有统计脚本。除了你自己填的模型接口，不向别处发送内容。这个页面也不嵌入第三方脚本。</p>
+  <div class="stats">
     <div><b>0</b><span>遥测与追踪</span></div>
-    <div><b>1×</b><span>每天模型打分</span></div>
-    <div><b>8</b><span>种信源类型</span></div>
+    <div><b>1×</b><span>有 Key 时，每天打分</span></div>
+    <div><b>默认关</b><span>X 与邮件示例</span></div>
     <div><b>MIT</b><span>开源许可</span></div>
   </div>
-  <div class="note reveal"><b>关于 X：</b>X 信源用你自己的账号做自动浏览，仍可能违反 X 的服务条款，有被限流或封号的风险，默认停用，请自行判断。<b>不支持微信、QQ 消息：</b>它们没有面向个人账号的官方接口，现有方案都需要逆向或 Hook 客户端。</div>
-  <div class="cta" style="margin-top:40px">
-    <a class="btn btn-p" href="https://github.com/Qiuizi/info-station/releases/latest">下载 v0.1.0</a>
-    <a class="btn btn-s" href="https://github.com/Qiuizi/info-station#readme">阅读文档 ›</a>
+  <div class="note"><b>关于 X。</b>X 信源用你自己的账号自动浏览，仍可能违反 X 的服务条款，有被限流、要求验证或封禁的风险。示例默认关闭，是否开启由你自己决定。本项目与 X Corp. 无关。<b>不支持微信、QQ 消息。</b>两者没有面向个人账号的官方消息接口。</div>
+  <div class="cta">
+    <a class="btn btn-p" href="https://github.com/Qiuizi/info-station/releases/download/v0.1.0/InfoStation_0.1.0_x64-setup.exe">下载 NSIS setup.exe</a>
+    <a class="btn btn-g" href="https://github.com/Qiuizi/info-station/releases/download/v0.1.0/InfoStation_0.1.0_x64_zh-CN.msi">下载 MSI</a>
   </div>
+  <p class="meta"><a href="https://github.com/Qiuizi/info-station/releases/latest">或打开 Releases / latest</a> · <a href="https://github.com/Qiuizi/info-station#readme">阅读 README</a></p>
 </div></div>
 
 <footer><div class="wrap">
   <span class="sp">© 2026 Qiuizi · MIT License</span>
-  <a href="https://github.com/Qiuizi/info-station">GitHub</a>
-  <a href="https://github.com/Qiuizi/info-station/releases">Releases</a>
-  <a href="https://github.com/Qiuizi/info-station/issues">反馈问题</a>
+  <span class="links">
+    <a href="https://github.com/Qiuizi/info-station/releases/latest">下载 v0.1.0</a>
+    <a href="https://github.com/Qiuizi/info-station">GitHub</a>
+    <a href="https://github.com/Qiuizi/info-station/issues">反馈问题</a>
+  </span>
 </div></footer>
-
-<script>
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-</script>
 </body>
 </html>
