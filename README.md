@@ -4,7 +4,7 @@
 
 # 信息监控站 · Info Station
 
-**把学校通知、竞赛科研、技术动态、新闻和邮件汇到一个安静的桌面窗口里，<br>每天在 DeepSeek 谷时批量打分，只把真正值得看的推给你。**
+**把学校通知、竞赛科研、技术动态、新闻和邮件汇到一个安静的桌面窗口里，<br>规则先筛一轮；有模型 Key 时，每天在 DeepSeek 谷时再打一次分。**
 
 [![Release](https://img.shields.io/github/v/release/Qiuizi/info-station?color=6366f1)](https://github.com/Qiuizi/info-station/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-8b5cf6)](LICENSE)
@@ -13,9 +13,24 @@
 ![Python 3.12](https://img.shields.io/badge/Python-3.12-3776ab)
 ![React 19](https://img.shields.io/badge/React-19-61dafb)
 
-[下载安装包](https://github.com/Qiuizi/info-station/releases/latest) · [项目主页](https://qiuizi.github.io/info-station/) · [English](#english)
+[**下载 v0.1.0**](#download) · [Releases / latest](https://github.com/Qiuizi/info-station/releases/latest) · [项目主页](https://qiuizi.github.io/info-station/) · [English](#english)
 
 </div>
+
+<a id="download"></a>
+
+## 下载 v0.1.0
+
+Windows 10 / 11（64 位）。当前最新发布：**<https://github.com/Qiuizi/info-station/releases/latest>**
+
+| 安装包 | 文件 | 说明 |
+| --- | --- | --- |
+| **NSIS（推荐）** | [InfoStation_0.1.0_x64-setup.exe](https://github.com/Qiuizi/info-station/releases/download/v0.1.0/InfoStation_0.1.0_x64-setup.exe) | 装到当前用户，不需要管理员。约 64 MB |
+| **MSI** | [InfoStation_0.1.0_x64_zh-CN.msi](https://github.com/Qiuizi/info-station/releases/download/v0.1.0/InfoStation_0.1.0_x64_zh-CN.msi) | Windows Installer。约 65 MB |
+
+安装包未做代码签名。SmartScreen 若提示「未知发布者」，点「更多信息 → 仍要运行」。Windows 11 已自带 WebView2。
+
+X 关键词 / 账号和邮件的预置示例**默认关闭**。X 要用你自己登录的浏览器，每天最多一次，仍可能违反 [X 的服务条款](https://x.com/tos)，有限流或封号风险。没有模型 Key 时只按规则打分。
 
 <p align="center"><img src="docs/assets/screenshots/all-light.webp" alt="全部动态（浅色）" width="880"></p>
 
@@ -27,7 +42,7 @@
 
 > 截图里的数据来自公开网页（川大官网 / 教务处 / IT 之家 / 中新网等），未接模型，所以只显示规则分。
 
-一个本地优先的 Windows 桌面应用：后台按间隔抓取**四川大学官网 / 教务处 / 软件学院通知、竞赛科研、GitHub 与技术动态、新闻话题、X 关键词与账号、你自己的邮箱**，用规则 + DeepSeek（或任何 OpenAI 兼容模型）做筛选，给出重要性分、一句话摘要、标签和**截止日期**；每天早上在 DeepSeek 谷时（半价）批量打一次分，打完生成简报并发一条汇总通知。所有数据只存在本机。
+一个本地优先的 Windows 桌面应用：后台按间隔抓取**四川大学官网 / 教务处 / 软件学院通知、竞赛科研、GitHub 与技术动态、新闻话题**，也可以接入 **X 关键词与账号、你自己的邮箱**（这两类预置示例默认关闭）。用规则 + DeepSeek（或任何 OpenAI 兼容模型）做筛选，给出重要性分、一句话摘要、标签和**截止日期**；配置了模型 Key 之后，每天早上在 DeepSeek 谷时（半价）批量打一次分，打完生成简报并发一条汇总通知。所有数据只存在本机。没有 Key 时只按规则打分。
 
 预置信源面向川大学生，但信源、规则、提示词全部是配置文件，换成任何学校或主题都可以。
 
@@ -109,7 +124,7 @@ DeepSeek 按峰谷计价（[官方价格页](https://api-docs.deepseek.com/zh-cn
 ### 打分口径（学校通知怎么排）
 
 1. **先判适用对象**：模型先给出 `audience` / `eligible`——面向全体本科生、你所在年级或学院本科生的通知算“与你有关”；只面向研究生、教职工、其他年级的，学校/竞赛类最终分封顶 40（`config/rules.yaml → llm_blend.eligibility_cap`）。
-2. **年级自动推算**：设置里年级只填入学年份（如 `2025级`），当前大几按日期推算（9 月换年级）。很多交换项目写着“大一新生除外”，年级写错会直接被判不符合。
+2. **年级自动推算**：设置里年级只填入学年份（写作「20xx级」），当前大几按日期推算（9 月换年级）。很多交换项目写着“大一新生除外”，年级写错会直接被判不符合。
 3. **五维合成**：模型同时给出相关/行动/份量/增量/可信 五维 0–10 分，按分类权重（`dims_weights`，学校类看重相关与行动，技术类看重份量与增量）加权，与模型总分各占一半。
 4. **规则侧**：标题里的“20xx级”与你的年级比对（同级 +12，其他年级 −12），研究生/教职工/毕业论文等扣分。
 5. **精选排序**：按“分数 + 截止临近加权”排序（3/7/14 天内 +12/+8/+4，已过截止的学校/竞赛 −15）；门槛按分类设置（默认学校 55、竞赛 55、技术 62、新闻 65）；截止还没到的旧通知也会留在精选里。
@@ -172,7 +187,12 @@ DeepSeek 按峰谷计价（[官方价格页](https://api-docs.deepseek.com/zh-cn
 
 ## 安装
 
-**直接用**：到 [Releases](https://github.com/Qiuizi/info-station/releases/latest) 下载 `InfoStation_<版本>_x64-setup.exe`（NSIS，装到当前用户，不需要管理员）或 `InfoStation_<版本>_x64_zh-CN.msi`，双击安装。安装包未做代码签名，SmartScreen 可能提示「未知发布者」，点「更多信息 → 仍要运行」。
+**v0.1.0** 见上面的[下载](#download)，文件也在 [Releases / latest](https://github.com/Qiuizi/info-station/releases/latest)：
+
+- [InfoStation_0.1.0_x64-setup.exe](https://github.com/Qiuizi/info-station/releases/download/v0.1.0/InfoStation_0.1.0_x64-setup.exe)：NSIS，装到当前用户，不需要管理员（推荐）
+- [InfoStation_0.1.0_x64_zh-CN.msi](https://github.com/Qiuizi/info-station/releases/download/v0.1.0/InfoStation_0.1.0_x64_zh-CN.msi)：MSI
+
+双击安装。安装包未做代码签名，SmartScreen 可能提示「未知发布者」，点「更多信息 → 仍要运行」。
 
 首次运行后：
 
@@ -414,7 +434,7 @@ info-station/
 
 ## English
 
-**Info Station** is a local-first Windows desktop app (Tauri 2 + React + a Python FastAPI sidecar) that watches university notice boards, contests, GitHub/tech news, general news, X keywords/accounts and your own mailboxes, then ranks everything with rules plus an LLM (DeepSeek or any OpenAI-compatible API). Scoring runs **once a day in DeepSeek's off-peak window** (half price), producing a daily brief, a deadline board and a single summary notification. Everything stays on your machine; there is no telemetry.
+**Info Station** is a local-first Windows desktop app (Tauri 2 + React + a Python FastAPI sidecar) that watches university notice boards, contests, GitHub/tech news and general news, and can optionally watch X keywords/accounts and your own mailboxes (those sample sources ship **disabled**). It ranks items with rules plus an LLM (DeepSeek or any OpenAI-compatible API). With an API key, scoring runs **once a day in DeepSeek's off-peak window** (half price); without a key it stays on rules. You get a daily brief, a deadline board and a single summary notification. Everything stays on your machine; there is no telemetry.
 
 - **Sources:** `html_list` (CSS selectors), `playwright` (rendered / logged-in pages), `rss`, `github`, `x` (your own logged-in browser, once a day, stops on any challenge), `email` (read-only IMAP: `SELECT` read-only + `BODY.PEEK`, never sends, deletes or flags), `json`, `feishu` (skeleton).
 - **Email:** QQ Mail and SCU Coremail use an authorization code / client-specific password, Gmail uses an App Password (2-Step Verification required; Workspace accounts need OAuth, not implemented), Outlook.com uses OAuth2 device-code flow with **your own** Entra app registration (public client flows enabled; scope `IMAP.AccessAsUser.All offline_access`). Secrets live only in Windows Credential Manager via `keyring`.
@@ -422,7 +442,7 @@ info-station/
 - **X disclaimer:** automated browsing with your own account may violate X's Terms of Service and can get the account rate-limited or suspended. X sources ship disabled; use at your own risk. Not affiliated with X Corp.
 - **Not planned:** WeChat / QQ messages — no official personal-account APIs; the alternatives (protocol reverse-engineering, client hooking) violate their terms and risk bans.
 
-**Install:** download the NSIS `setup.exe` or `.msi` from [Releases](https://github.com/Qiuizi/info-station/releases/latest) (unsigned; SmartScreen may warn).
+**Download v0.1.0 (Windows 10/11 x64)** from [Releases / latest](https://github.com/Qiuizi/info-station/releases/latest): [NSIS `InfoStation_0.1.0_x64-setup.exe`](https://github.com/Qiuizi/info-station/releases/download/v0.1.0/InfoStation_0.1.0_x64-setup.exe) (recommended, per-user, no admin) or [MSI `InfoStation_0.1.0_x64_zh-CN.msi`](https://github.com/Qiuizi/info-station/releases/download/v0.1.0/InfoStation_0.1.0_x64_zh-CN.msi). Unsigned; SmartScreen may warn. X and email sample sources ship disabled. X uses your own logged-in browser at most once a day and may violate X's Terms of Service.
 **Develop:** Node 22 + pnpm, uv (Python 3.12), Rust (MSVC) → `.\dev.ps1`. Tests: `cd backend; uv run pytest -q`. Package: `.\scripts\build-app.ps1`.
 
 Licensed under [MIT](LICENSE) © 2026 Qiuizi.
